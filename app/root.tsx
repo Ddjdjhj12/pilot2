@@ -62,33 +62,11 @@ export async function loader(args: LoaderFunctionArgs) {
   };
 }
 
- // 全站默认 SEO 设置（首页及所有页面通用）
-export const meta = ({ data }: MetaArgs<typeof loader>) => {
-  const defaultTitle =
-    "Blackneck Coffee | Yunnan Specialty Coffee Protecting the Black-Necked Crane’s Home";
-  const defaultDescription =
-    "Blackneck Coffee sources high-altitude coffee from Yunnan, celebrating the harmony between people, coffee, and nature while supporting the protection of the Black-Necked Crane’s habitat.";
+// 引入全站 SEO 模块
+import { meta as seoMeta } from "./components/seo";
 
-  // 若单页面设置了独立 SEO，优先使用该值
-  const seoData = (data?.seo as SeoConfig) || {};
-  const pageTitle = seoData.title || defaultTitle;
-  const pageDescription = seoData.description || defaultDescription;
-
-  return [
-    { title: pageTitle },
-    { name: "description", content: pageDescription },
-    { property: "og:title", content: pageTitle },
-    { property: "og:description", content: pageDescription },
-    { property: "twitter:card", content: "summary_large_image" },
-    { name: "twitter:title", content: pageTitle },
-    { name: "twitter:description", content: pageDescription },
-    {
-      name: "keywords",
-      content:
-        "Yunnan coffee, Blackneck Coffee, specialty coffee, single origin coffee, sustainable coffee, high altitude coffee, arabica",
-    },
-  ];
-};
+// 统一调用自定义 SEO
+export const meta = seoMeta;
 
 
 
