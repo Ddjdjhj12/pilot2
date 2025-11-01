@@ -1,11 +1,11 @@
 // Supports weights 400-700
 import "@fontsource-variable/cabin";
 import { TooltipProvider } from "@radix-ui/react-tooltip";
-import type { SeoConfig } from "@shopify/hydrogen";
-import { Analytics, getSeoMeta, useNonce } from "@shopify/hydrogen";
+// ❌ 删掉 getSeoMeta
+import { Analytics, useNonce } from "@shopify/hydrogen";
 import { useThemeSettings, withWeaverse } from "@weaverse/hydrogen";
 import type { CSSProperties } from "react";
-import type { LinksFunction, LoaderFunctionArgs, MetaArgs } from "react-router";
+import type { LinksFunction, LoaderFunctionArgs } from "react-router";
 import {
   isRouteErrorResponse,
   Links,
@@ -33,18 +33,17 @@ import styles from "./styles/app.css?url";
 import { DEFAULT_LOCALE } from "./utils/const";
 import { GlobalStyle } from "./weaverse/style";
 
+// ======================  SEO 设置  ======================
+import { meta as seoMeta } from "./components/seo"; // ✅ 引入我们的 SEO 模块
+export const meta = seoMeta; // ✅ 全站统一调用
+// ======================================================
+
 export type RootLoader = typeof loader;
 
 export const links: LinksFunction = () => {
   return [
-    {
-      rel: "preconnect",
-      href: "https://cdn.shopify.com",
-    },
-    {
-      rel: "preconnect",
-      href: "https://shop.app",
-    },
+    { rel: "preconnect", href: "https://cdn.shopify.com" },
+    { rel: "preconnect", href: "https://shop.app" },
     { rel: "icon", type: "image/svg+xml", href: "/favicon.ico" },
   ];
 };
@@ -62,14 +61,6 @@ export async function loader(args: LoaderFunctionArgs) {
   };
 }
 
-// 引入全站 SEO 模块
-import { meta as seoMeta } from "./components/seo";
-
-// 统一调用自定义 SEO
-export const meta = seoMeta;
-
-
-
 function App() {
   return <Outlet />;
 }
@@ -79,7 +70,6 @@ export function ErrorBoundary({ error }: { error: Error }) {
   const isRouteError = isRouteErrorResponse(routeError);
 
   let pageType = "page";
-
   if (isRouteError && routeError.status === 404) {
     pageType = routeError.data || pageType;
   }
@@ -88,9 +78,7 @@ export function ErrorBoundary({ error }: { error: Error }) {
     routeError.status === 404 ? (
       <NotFound type={pageType} />
     ) : (
-      <GenericError
-        error={{ message: `${routeError.status} ${routeError.data}` }}
-      />
+      <GenericError error={{ message: `${routeError.status} ${routeError.data}` }} />
     )
   ) : (
     <GenericError error={error instanceof Error ? error : undefined} />
@@ -104,12 +92,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const locale = data?.selectedLocale ?? DEFAULT_LOCALE;
   const { topbarHeight, topbarText } = useThemeSettings();
   const shouldShowNewsletterPopup = useShouldRenderNewsletterPopup();
+
   if (
     location.pathname === "/subrequest-profiler" ||
     location.pathname === "/graphiql"
   ) {
     return children;
   }
+
   return (
     <html lang={locale.language}>
       <head>
