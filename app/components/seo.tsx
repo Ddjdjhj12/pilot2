@@ -1,35 +1,38 @@
-// app/components/seo.tsx
-
-import type { MetaArgs } from "@shopify/hydrogen";
+import type { MetaArgs } from "react-router";
 import type { SeoConfig } from "@shopify/hydrogen";
 
-/**
- * 全站统一 SEO 模板
- * 自动接管 Hydrogen 默认的 getSeoMeta 输出
- * 优先使用每页 data.seo，否则使用品牌默认信息
- */
+// 全站默认 SEO（标题 + 描述）
+const DEFAULT_TITLE =
+  "Blackneck Coffee | Yunnan Specialty Coffee Protecting the Black-Necked Crane’s Home";
 
-export function meta({ data }: MetaArgs) {
-  const defaultTitle = "Blackneck Coffee | Yunnan Specialty Coffee";
-  const defaultDescription =
-    "High-altitude Arabica coffee from Yunnan’s pristine highlands — inspired by the Black-necked Crane, dedicated to purity, craftsmanship, and sustainability.";
+const DEFAULT_DESCRIPTION =
+  "Blackneck Coffee sources high-altitude coffee from Yunnan, celebrating the harmony between people, coffee, and nature while supporting the protection of the Black-Necked Crane’s habitat.";
 
+export const meta = ({ data }: MetaArgs<any>) => {
+  // 若单页面设置了独立 SEO，优先使用该值
   const seoData = (data?.seo as SeoConfig) || {};
-  const title = seoData.title || defaultTitle;
-  const description = seoData.description || defaultDescription;
+
+  const title = seoData.title || DEFAULT_TITLE;
+  const description = seoData.description || DEFAULT_DESCRIPTION;
 
   return [
     { title },
     { name: "description", content: description },
+
+    // Open Graph
     { property: "og:title", content: title },
     { property: "og:description", content: description },
+
+    // Twitter
     { name: "twitter:card", content: "summary_large_image" },
     { name: "twitter:title", content: title },
     { name: "twitter:description", content: description },
+
+    // Keywords（可随时修改）
     {
       name: "keywords",
       content:
-        "Blackneck Coffee, Yunnan coffee, specialty coffee, single origin, sustainable coffee, high altitude coffee, Black-necked Crane",
+        "Yunnan coffee, Blackneck Coffee, specialty coffee, single origin coffee, sustainable coffee, high altitude coffee, arabica",
     },
   ];
-}
+};
