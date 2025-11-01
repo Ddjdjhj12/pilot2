@@ -62,9 +62,28 @@ export async function loader(args: LoaderFunctionArgs) {
   };
 }
 
-export const meta = ({ data }: MetaArgs<typeof loader>) => {
-  return getSeoMeta(data?.seo as SeoConfig);
+  export const meta = ({ data }: MetaArgs<typeof loader>) => {
+  const defaultTitle =
+    "Blackneck Coffee | Yunnan Specialty Coffee Protecting the Black-Necked Crane’s Home";
+  const defaultDescription =
+    "Blackneck Coffee sources high-altitude coffee from Yunnan, celebrating the harmony between people, coffee, and nature while supporting the protection of the Black-Necked Crane’s habitat.";
+
+  // 如果单个页面有独立 SEO 配置则优先使用
+  const pageTitle =
+    (data?.seo as SeoConfig)?.title || defaultTitle;
+  const pageDescription =
+    (data?.seo as SeoConfig)?.description || defaultDescription;
+
+  return [
+    { title: pageTitle },
+    { name: "description", content: pageDescription },
+    { property: "og:title", content: pageTitle },
+    { property: "og:description", content: pageDescription },
+    { property: "twitter:card", content: "summary_large_image" },
+    { name: "keywords", content: "Yunnan coffee, Blackneck Coffee, single origin, specialty coffee, sustainable coffee, high altitude coffee" },
+  ];
 };
+
 
 function App() {
   return <Outlet />;
