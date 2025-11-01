@@ -62,17 +62,17 @@ export async function loader(args: LoaderFunctionArgs) {
   };
 }
 
-  export const meta = ({ data }: MetaArgs<typeof loader>) => {
+ // 全站默认 SEO 设置（首页及所有页面通用）
+export const meta = ({ data }: MetaArgs<typeof loader>) => {
   const defaultTitle =
     "Blackneck Coffee | Yunnan Specialty Coffee Protecting the Black-Necked Crane’s Home";
   const defaultDescription =
     "Blackneck Coffee sources high-altitude coffee from Yunnan, celebrating the harmony between people, coffee, and nature while supporting the protection of the Black-Necked Crane’s habitat.";
 
-  // 如果单个页面有独立 SEO 配置则优先使用
-  const pageTitle =
-    (data?.seo as SeoConfig)?.title || defaultTitle;
-  const pageDescription =
-    (data?.seo as SeoConfig)?.description || defaultDescription;
+  // 若单页面设置了独立 SEO，优先使用该值
+  const seoData = (data?.seo as SeoConfig) || {};
+  const pageTitle = seoData.title || defaultTitle;
+  const pageDescription = seoData.description || defaultDescription;
 
   return [
     { title: pageTitle },
@@ -80,9 +80,16 @@ export async function loader(args: LoaderFunctionArgs) {
     { property: "og:title", content: pageTitle },
     { property: "og:description", content: pageDescription },
     { property: "twitter:card", content: "summary_large_image" },
-    { name: "keywords", content: "Yunnan coffee, Blackneck Coffee, single origin, specialty coffee, sustainable coffee, high altitude coffee" },
+    { name: "twitter:title", content: pageTitle },
+    { name: "twitter:description", content: pageDescription },
+    {
+      name: "keywords",
+      content:
+        "Yunnan coffee, Blackneck Coffee, specialty coffee, single origin coffee, sustainable coffee, high altitude coffee, arabica",
+    },
   ];
 };
+
 
 
 function App() {
