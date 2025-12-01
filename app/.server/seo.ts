@@ -21,10 +21,10 @@ function root({
   url: Request["url"];
 }): SeoConfig {
   return {
-    title: shop?.name,
-    titleTemplate: "%s | Weaverse Hydrogen Demo Store",
-    description: truncate(shop?.description ?? ""),
-    handle: "@weaverse",
+    title: shop?.name ?? "Blackneck Coffee",
+    titleTemplate: "%s | Blackneck Coffee – Yunnan Specialty Coffee",
+    description: truncate(shop?.description ?? "Single-origin Yunnan specialty coffee, ethically sourced from highland farms."),
+    handle: "@blackneckcoffee",
     url,
     robots: {
       noIndex: false,
@@ -36,10 +36,7 @@ function root({
       name: shop.name,
       logo: shop.brand?.logo?.image?.url,
       sameAs: [
-        "https://twitter.com/weaverseio",
-        "https://facebook.com/weaverse",
-        "https://instagram.com/weaverse.io",
-        "https://youtube.com/@weaverse",
+        "https://instagram.com/blackneckcoffee",
       ],
       url,
       potentialAction: {
@@ -54,8 +51,8 @@ function root({
 function home(): SeoConfig {
   return {
     title: "Home",
-    titleTemplate: "%s | Weaverse Hydrogen Demo Store",
-    description: "The best Shopify Hydrogen Theme Customizer",
+    titleTemplate: "%s | Blackneck Coffee – Yunnan Specialty Coffee",
+    description: "Discover single-origin Yunnan coffee crafted from high-altitude farms. Freshly roasted, ethically sourced.",
     robots: {
       noIndex: false,
       noFollow: false,
@@ -222,7 +219,7 @@ function collectionJsonLd({
           item: `${siteUrl.host}/collections`,
         },
         {
-          "@type": "ListItem",
+          "@type": "ListList",
           position: 2,
           name: collectionData.title,
         },
@@ -257,7 +254,7 @@ function collection({
     description: truncate(
       collectionData?.seo?.description ?? collectionData?.description ?? "",
     ),
-    titleTemplate: "%s | Collection",
+    titleTemplate: "%s | Blackneck Coffee Collections",
     url,
     media: {
       type: "image",
@@ -293,7 +290,7 @@ function collectionsJsonLd({
     "@context": "https://schema.org",
     "@type": "CollectionPage",
     name: "Collections",
-    description: "All collections",
+    description: "Explore coffee collections from Blackneck Coffee.",
     url,
     mainEntity: {
       "@type": "ItemList",
@@ -311,8 +308,8 @@ function listCollections({
 }): SeoConfig {
   return {
     title: "Collections",
-    titleTemplate: "%s | Collections",
-    description: "All hydrogen collections",
+    titleTemplate: "%s | Blackneck Coffee Collections",
+    description: "Browse curated coffee collections from Yunnan’s highland farms.",
     url,
     jsonLd: collectionsJsonLd({ collections, url }),
   };
@@ -336,7 +333,7 @@ function article({
   return {
     title: articleData?.seo?.title ?? articleData?.title,
     description: truncate(articleData?.seo?.description ?? ""),
-    titleTemplate: "%s | Journal",
+    titleTemplate: "%s | Blackneck Coffee Journal",
     url,
     media: {
       type: "image",
@@ -371,7 +368,7 @@ function blog({
   return {
     title: blogData?.seo?.title,
     description: truncate(blogData?.seo?.description || ""),
-    titleTemplate: "%s | Blog",
+    titleTemplate: "%s | Blackneck Coffee Blog",
     url,
     jsonLd: {
       "@context": "https://schema.org",
@@ -393,7 +390,7 @@ function page({
   return {
     description: truncate(pageData?.seo?.description || ""),
     title: pageData?.seo?.title ?? pageData?.title,
-    titleTemplate: "%s | Page",
+    titleTemplate: "%s | Blackneck Coffee",
     url,
     jsonLd: {
       "@context": "https://schema.org",
@@ -413,7 +410,7 @@ function policy({
   return {
     description: truncate(policyData?.body ?? ""),
     title: policyData?.title,
-    titleTemplate: "%s | Policy",
+    titleTemplate: "%s | Blackneck Coffee Policy",
     url,
   };
 }
@@ -438,8 +435,8 @@ function policies({
     });
   return {
     title: "Policies",
-    titleTemplate: "%s | Policies",
-    description: "Weaverse Hydrogen store policies",
+    titleTemplate: "%s | Blackneck Coffee Policies",
+    description: "Store policies for Blackneck Coffee.",
     jsonLd: [
       {
         "@context": "https://schema.org",
@@ -449,7 +446,7 @@ function policies({
       {
         "@context": "https://schema.org",
         "@type": "WebPage",
-        description: "Weaverse Hydrogen store policies",
+        description: "Blackneck Coffee policy information",
         name: "Policies",
         url,
       },
@@ -472,13 +469,6 @@ export const seoPayload = {
 
 /**
  * Truncate a string to a given length, adding an ellipsis if it was truncated
- * @param str - The string to truncate
- * @param num - The maximum length of the string
- * @returns The truncated string
- * @example
- * ```js
- * truncate('Hello world', 5) // 'Hello...'
- * ```
  */
 function truncate(str: string, num = 155): string {
   if (typeof str !== "string") {
