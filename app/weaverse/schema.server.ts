@@ -983,6 +983,13 @@ export const themeSchema: HydrogenThemeSchema = {
         },
         {
           type: "text",
+          name: "socialTikTok",
+          label: "TikTok",
+          defaultValue: "https://www.tiktok.com/",
+},
+
+        {
+          type: "text",
           name: "socialX",
           label: "X (formerly Twitter)",
           defaultValue: "https://x.com/i/communities/1636383560197373952",
