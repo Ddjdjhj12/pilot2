@@ -15,6 +15,19 @@ import Link from "../link";
 import { CountrySelector } from "./country-selector";
 import { FooterMenu } from "./menu/footer-menu";
 
+/** ✅ 新增 TikTok Icon（SVG 版本） */
+function TikTokIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      className={className}
+    >
+      <path d="M12.38 2h3.02c.14 1.3.72 2.3 1.72 3 .93.64 2 .94 3.2.9v3.2c-1.2.1-2.3-.2-3.3-.7v6.7c0 2-1 3.4-2.9 4.2-2 .9-4.3.5-5.8-1.1-1.6-1.7-2-3.8-1.2-6 1-2.3 3.1-3.6 5.7-3.5v3.3c-.8-.1-1.4.2-1.9.8-.4.5-.5 1.1-.3 1.8.3.7.8 1.1 1.5 1.2.7.1 1.3-.1 1.8-.6.3-.3.5-.8.5-1.3V2z" />
+    </svg>
+  );
+}
+
 const variants = cva("", {
   variants: {
     width: {
@@ -38,6 +51,8 @@ export function Footer() {
     socialInstagram,
     socialLinkedIn,
     socialX,
+    /** ✅ 新增 TikTok 字段 */
+    socialTikTok,
     footerLogoData,
     footerLogoWidth,
     bio,
@@ -52,13 +67,13 @@ export function Footer() {
   } = useThemeSettings();
   const fetcher = useFetcher<{ ok: boolean; error: string }>();
 
-  // Compute message and error from fetcher data
   const message = fetcher.data?.ok ? "Thank you for signing up! 🎉" : "";
   const error =
     fetcher.data && !fetcher.data.ok
       ? fetcher.data.error || "An error occurred while signing up."
       : "";
 
+  /** ✅ 完整的社交媒体数组（已加入 TikTok） */
   const SOCIAL_ACCOUNTS = [
     {
       name: "Instagram",
@@ -79,6 +94,11 @@ export function Footer() {
       name: "Facebook",
       to: socialFacebook,
       Icon: FacebookLogoIcon,
+    },
+    {
+      name: "TikTok",
+      to: socialTikTok,
+      Icon: TikTokIcon,
     },
   ].filter((acc) => acc.to && acc.to.trim() !== "");
 
@@ -113,6 +133,8 @@ export function Footer() {
                 </div>
               )}
               {bio ? <div dangerouslySetInnerHTML={{ __html: bio }} /> : null}
+
+              {/* 社交媒体图标 */}
               <div className="flex gap-4">
                 {SOCIAL_ACCOUNTS.map(({ to, name, Icon }) => (
                   <Link
@@ -126,6 +148,8 @@ export function Footer() {
                 ))}
               </div>
             </div>
+
+            {/* 地址 */}
             <div className="flex flex-col gap-6">
               <div className="text-base">{addressTitle}</div>
               <div className="space-y-2">
@@ -133,6 +157,8 @@ export function Footer() {
                 <p>Email: {storeEmail}</p>
               </div>
             </div>
+
+            {/* Newsletter */}
             <div className="flex flex-col gap-6">
               <div className="text-base">{newsletterTitle}</div>
               <div className="space-y-2">
@@ -159,6 +185,7 @@ export function Footer() {
                     </Button>
                   </div>
                 </fetcher.Form>
+
                 <div className="h-8">
                   {error && (
                     <div className="mb-6 flex w-fit gap-1 bg-red-100 px-2 py-1 text-red-700">
@@ -175,8 +202,10 @@ export function Footer() {
               </div>
             </div>
           </div>
+
           <FooterMenu />
         </div>
+
         <div className="flex flex-col border-t border-line-subtle items-center justify-between gap-4 py-9 lg:flex-row">
           <div className="flex gap-2">
             <CountrySelector />
