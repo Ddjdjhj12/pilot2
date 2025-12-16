@@ -22,8 +22,10 @@ export function MobileMenu() {
       >
         <MenuTrigger />
       </Dialog.Trigger>
+
       <Dialog.Portal>
         <Dialog.Overlay className="data-[state=open]:animate-fade-in fixed inset-0 z-10 bg-black/50" />
+
         <Dialog.Content
           onCloseAutoFocus={(e) => e.preventDefault()}
           className={cn([
@@ -35,11 +37,19 @@ export function MobileMenu() {
           aria-describedby={undefined}
         >
           <Dialog.Title asChild>
-            <div className="text-xl font-semibold tracking-wide mb-3">MENU</div>
+            <div className="text-xl font-semibold tracking-wide mb-3">
+              MENU
+            </div>
           </Dialog.Title>
 
           <Dialog.Close asChild>
-            <XIcon className="fixed top-4 right-4 h-6 w-6 text-white" />
+            <button
+              type="button"
+              className="fixed top-4 right-4"
+              aria-label="Close menu"
+            >
+              <XIcon className="h-6 w-6 text-white" />
+            </button>
           </Dialog.Close>
 
           <div className="h-px bg-white/20 mb-4" />
@@ -63,21 +73,23 @@ export function MobileMenu() {
 function CollapsibleMenuItem({ item }: { item: SingleMenuItem }) {
   const { title, to, items } = item;
 
+  // ===== 无子菜单：点击即关闭 =====
   if (!items?.length) {
     return (
-      <Dialog.Close asChild>
-        <li>
+      <li>
+        <Dialog.Close asChild>
           <Link
             to={to}
             className="block w-full py-4 text-lg tracking-wide font-semibold text-white hover:text-white/70 transition-colors"
           >
             {title}
           </Link>
-        </li>
-      </Dialog.Close>
+        </Dialog.Close>
+      </li>
     );
   }
 
+  // ===== 有子菜单 =====
   return (
     <Collapsible.Root>
       <Collapsible.Trigger asChild>
@@ -108,7 +120,11 @@ function CollapsibleMenuItem({ item }: { item: SingleMenuItem }) {
   );
 }
 
-function MenuTrigger(props: Dialog.DialogTriggerProps & { ref?: React.Ref<HTMLButtonElement> }) {
+function MenuTrigger(
+  props: Dialog.DialogTriggerProps & {
+    ref?: React.Ref<HTMLButtonElement>;
+  }
+) {
   const { ref, ...rest } = props;
   return (
     <button ref={ref} type="button" {...rest}>
